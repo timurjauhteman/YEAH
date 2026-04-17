@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Executive Summary: Krisis Selat Hormuz & Behavioral Economics</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --google-blue: #4285F4;
+            --google-red: #EA4335;
+            --google-yellow: #FBBC05;
+            --google-green: #34A853;
+            --text-dark: #202124;
+            --bg-light: #ffffff;
+            --page-bg: #f0f2f5;
+            --transition-speed: 0.3s;
+            --border-color: #dadce0;
+        }
+
+        /* Dark Mode Variables */
+        body.dark-mode {
+            --text-dark: #e8eaed;
+            --bg-light: #202124;
+            --page-bg: #121212;
+            --border-color: #5f6368;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            margin: 0;
+            padding: 0;
+            background-color: var(--page-bg);
+            scroll-behavior: smooth;
+            transition: background-color var(--transition-speed), color var(--transition-speed);
+        }
+
+        /* Scroll Progress Bar */
+        #scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 5px;
+            background: linear-gradient(to right, var(--google-blue), var(--google-red), var(--google-yellow));
+            z-index: 9999;
+            transition: width 0.1s;
+        }
+
+        /* Container Halaman (A4) */
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 20mm;
+            margin: 15mm auto;
+            background: var(--bg-light);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            page-break-after: always;
+            position: relative;
+            overflow: hidden;
+            transition: transform var(--transition-speed) ease, background var(--transition-speed), box-shadow var(--transition-speed);
+        }
+
+        body.dark-mode .page {
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+        }
+
+        /* Set interactive 3D effect on mousemove via JS */
+        .page.tilt {
+            transform-style: preserve-3d;
+        }
+
+        /* Anti-Gravity Aesthetic Elements */
+        .floating-circle {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(50px);
+            z-index: 0;
+            opacity: 0.15;
+            animation: floatAnimation 10s infinite alternate ease-in-out;
+            pointer-events: none;
+        }
+
+        @keyframes floatAnimation {
+            0% { transform: translateY(0px) translateX(0px) scale(1); }
+            50% { transform: translateY(20px) translateX(10px) scale(1.05); }
+            100% { transform: translateY(-10px) translateX(-10px) scale(0.95); }
+        }
+
+        header {
+            border-bottom: 2px solid var(--google-blue);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 { color: var(--google-blue); font-size: 32pt; margin: 0; letter-spacing: -1px; }
+        h2 { color: var(--google-green); border-left: 6px solid var(--google-green); padding-left: 15px; margin-top: 40px; }
+        h3 { color: var(--google-red); margin-top: 25px; }
+
+        .content { position: relative; z-index: 1; }
+        p, li { font-size: 11pt; color: inherit; opacity: 0.85; }
+
+        /* Tooltip Interaktif */
+        .tooltip {
+            position: relative;
+            cursor: help;
+            border-bottom: 1px dotted var(--google-blue);
+            color: var(--google-blue);
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .tooltip:hover {
+            color: var(--google-red);
+        }
+
+        .tooltip::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 130%;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background: rgba(32, 33, 36, 0.95);
+            backdrop-filter: blur(5px);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 0.9em;
+            font-weight: 400;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 100;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            pointer-events: none;
+        }
+
+        .tooltip::before {
+            content: '';
+            position: absolute;
+            bottom: 110%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 6px;
+            border-style: solid;
+            border-color: rgba(32, 33, 36, 0.95) transparent transparent transparent;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .tooltip:hover::after, .tooltip:hover::before {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Glassmorphism Highlight Box */
+        .highlight-box {
+            background: rgba(248, 249, 250, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 25px 0;
+            border-left: 6px solid var(--google-yellow);
+            border-right: 1px solid rgba(255,255,255,0.2);
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.05);
+            transition: all var(--transition-speed);
+        }
+
+        body.dark-mode .highlight-box {
+            background: rgba(255, 255, 255, 0.03);
+            border-right: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .highlight-box:hover {
+            transform: translateY(-3px) scale(1.01);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+        }
+
+        /* Tabel Interaktif */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            background-color: transparent;
+            z-index: 2;
+            position: relative;
+        }
+
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            text-align: left;
+            transition: background-color var(--transition-speed);
+        }
+
+        th {
+            background-color: rgba(66, 133, 244, 0.05);
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        tr:hover td {
+            background-color: rgba(52, 168, 83, 0.08); /* Hijau transparan saat hover */
+            cursor: pointer;
+        }
+
+        /* Simulator Card */
+        .simulator-card {
+            background: linear-gradient(135deg, rgba(66,133,244,0.05), rgba(234,67,53,0.05));
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 30px;
+        }
+
+        .slider-container {
+            margin: 20px 0;
+        }
+
+        input[type=range] {
+            width: 100%;
+            accent-color: var(--google-red);
+            cursor: pointer;
+        }
+
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .metric-box {
+            flex: 1;
+            background: var(--bg-light);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+
+        .metric-box:hover {
+            transform: translateY(-5px);
+        }
+
+        .metric-box h4 {
+            margin: 0 0 10px 0;
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        .metric-box .val {
+            font-size: 1.6em;
+            font-weight: bold;
+            color: var(--google-blue);
+        }
+
+        .metric-box.danger .val { color: var(--google-red); }
+        .metric-box.warning .val { color: var(--google-yellow); }
+
+        /* Area Grafik */
+        .chart-container {
+            position: relative;
+            margin: 40px 0;
+            height: 350px;
+            width: 100%;
+            background: var(--bg-light);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            transition: background var(--transition-speed), border var(--transition-speed);
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 15mm;
+            left: 20mm;
+            font-size: 9pt;
+            opacity: 0.6;
+            border-top: 1px solid var(--border-color);
+            width: calc(100% - 40mm);
+            padding-top: 10px;
+        }
+
+        /* Buttons & Actions */
+        .interactive-btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, var(--google-blue), #1a73e8);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(66, 133, 244, 0.3);
+            transition: all var(--transition-speed);
+            margin-top: 10px;
+        }
+
+        .interactive-btn:hover {
+            box-shadow: 0 6px 15px rgba(66, 133, 244, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .interactive-btn:active {
+            transform: scale(0.97);
+        }
+
+        .interactive-btn.secondary {
+            background: linear-gradient(135deg, var(--google-red), #c5221f);
+            box-shadow: 0 4px 10px rgba(234, 67, 53, 0.3);
+        }
+
+        .floating-actions {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .action-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--bg-light);
+            border: 2px solid var(--border-color);
+            color: var(--text-dark);
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .action-btn:hover {
+            transform: scale(1.1) rotate(15deg);
+            border-color: var(--google-yellow);
+            color: var(--google-yellow);
+        }
+
+        /* Scroll Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media print {
+            body { background: none !important; }
+            .page {
+                margin: 0;
+                box-shadow: none;
+                width: 100%;
+                min-height: 100%;
+            }
+            .floating-circle, .floating-actions, #scroll-progress, .simulator-card { display: none; }
+            .interactive-btn { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="scroll-progress"></div>
+
+    <div class="floating-actions">
+        <button class="action-btn" id="darkModeToggle" title="Toggle Dark Mode">🌙</button>
+        <button class="action-btn" onclick="window.scrollTo(0, 0)" title="Scroll to Top">⬆️</button>
+    </div>
+
+    <!-- PAGE 1 -->
+    <div class="page custom-tilt" id="page1">
+        <div class="floating-circle" style="width: 350px; height: 350px; background: var(--google-blue); top: -80px; right: -80px; animation-delay: 0s;"></div>
+        <div class="floating-circle" style="width: 150px; height: 150px; background: var(--google-yellow); bottom: 100px; left: -50px; animation-delay: 2s;"></div>
+        
+        <header class="reveal">
+            <h1>Executive Summary</h1>
+            <p><strong>Proyek:</strong> Analisis Volatilitas BBM & Geopolitik Selat Hormuz</p>
+            <p><strong>Metodologi:</strong> <span class="tooltip" data-tooltip="Cabang ilmu yang menggabungkan ekonomi dan psikologi untuk memahami perilaku tidak rasional pasar.">Behavioral Economics</span> (Anti-Gravity Framework)</p>
+        </header>
+
+        <div class="content reveal">
+            <h2>1. Ringkasan Eksekutif</h2>
+            <p>Laporan ini menganalisis risiko sistemik distribusi minyak mentah global melalui Selat Hormuz. Dengan menggunakan pendekatan Behavioral Economics, kami melampaui model suplai-permintaan tradisional untuk memahami bagaimana psikologi pasar menciptakan efek "Anti-Gravity" pada harga BBM.</p>
+            
+            <div class="highlight-box">
+                <strong>Key Insight:</strong> Penutupan Selat Hormuz adalah pemicu <span class="tooltip" data-tooltip="Kecenderungan menilai risiko suatu kejadian membesar karena mudahnya memori buruk tersebut diingat.">Availability Heuristic</span>. Pasar tidak bereaksi terhadap suplai fisik saat ini, melainkan terhadap <strong>skenario terburuk</strong> yang paling menakutkan yang mudah diingat oleh publik.
+            </div>
+
+            <h3>Visi Strategis</h3>
+            <ul>
+                <li>Stabilisasi harga melalui manajemen ekspektasi publik.</li>
+                <li>Diversifikasi jalur untuk mengurangi ketergantungan kognitif pada Hormuz.</li>
+                <li>Kebijakan subsidi berbasis <span class="tooltip" data-tooltip="Intervensi halus dari arsitektur pilihan (choice architecture) yang mendorong masyarakat membuat keputusan positif tanpa paksaan.">Nudge Theory</span>.</li>
+            </ul>
+        </div>
+        <div class="footer">Halaman 1 | Confidential - Strategic Analysis</div>
+    </div>
+
+    <!-- PAGE 2 -->
+    <div class="page custom-tilt" id="page2">
+        <div class="floating-circle" style="width: 250px; height: 250px; background: var(--google-green); top: 150px; left: -100px; animation-delay: 4s;"></div>
+        
+        <header class="reveal">
+            <h2>2. Arsitektur Krisis: Titik Nadir Selat Hormuz</h2>
+        </header>
+        <div class="content reveal">
+            <p>Selat Hormuz melayani 21 juta barel minyak per hari. Model "Anti-Gravity" menunjukkan bahwa ancaman fisik seringkali kalah kuat dibanding ancaman perseptual.</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Faktor Risiko</th>
+                        <th>Dampak Fisik</th>
+                        <th>Dampak Perilaku (Behavioral)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr onclick="alert('Insight: Pada krisis 1973, antrean panjang di SPBU AS justru disebabkan Panic Buying, bukan murni kelangkaan.')">
+                        <td>Blokade Militer</td>
+                        <td>Suplai Drop 20%</td>
+                        <td><strong>Panic Buying:</strong> Kelangkaan buatan karena penimbunan. <em>(Klik untuk info)</em></td>
+                    </tr>
+                    <tr>
+                        <td>Premi Asuransi Naik</td>
+                        <td>+$2-5 per Barel</td>
+                        <td><strong><span class="tooltip" data-tooltip="Bias kognitif di mana harga tinggi pertama kali dianggap sebagai patokan 'normal' baru.">Anchoring</span>:</strong> Pasar menerima harga tinggi sebagai rujukan.</td>
+                    </tr>
+                    <tr>
+                        <td>Retorika Politik</td>
+                        <td>0% (Tidak ada perubahan)</td>
+                        <td><strong>Volatilitas Tinggi:</strong> Spekulan bermain pada ketakutan.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Efek Anti-Gravity pada Harga</h3>
+            <p>Dalam kondisi krisis Hormuz, harga mengalami <strong>Non-Linear Escalation</strong>. Investor mengalami <span class="tooltip" data-tooltip="Ketakutan kehilangan akses atau uang jauh lebih memotivasi daripada euforia mendapatkan keuntungan.">Loss Aversion</span>; ketakutan kehilangan akses energi jauh lebih kuat daripada rasionalitas ekonomi.</p>
+        </div>
+        <div class="footer">Halaman 2 | Geopolitical Risk Assessment</div>
+    </div>
+
+    <!-- PAGE 3 -->
+    <div class="page custom-tilt" id="page3">
+        <div class="floating-circle" style="width: 300px; height: 300px; background: var(--google-red); bottom: -50px; right: -80px; animation-delay: 1s;"></div>
+        
+        <header class="reveal">
+            <h2>3. Mekanisme "Anti-Gravity" Ekonomi</h2>
+        </header>
+        <div class="content reveal">
+            <p>Mengapa harga melesat secara dramatis, melampaui logika fundamental angka pasokan?</p>
+            
+            <div class="highlight-box" style="border-left-color: var(--google-red);">
+                <strong>Formula Risiko Anti-Gravity:</strong> <br>
+                <em style="font-size: 1.2em; display:block; text-align:center; margin: 10px 0;">Harga Aktual = Fundamental + (Premi Risiko Geopolitik &times; <span style="color:var(--google-red); font-weight:bold;">Multiplier Emosi Pasar</span>)</em>
+            </div>
+
+            <!-- INTERACTIVE SIMULATOR -->
+            <div class="simulator-card reveal">
+                <h3 style="margin-top: 0; color: var(--text-dark);">🎛️ Simulator "Anti-Gravity" Geopolitik</h3>
+                <p>Geser slider untuk melihat bagaimana persepsi ancaman meningkatkan harga retail secara tidak proporsional.</p>
+                
+                <div class="slider-container">
+                    <label for="tensionSlider" style="font-weight:bold;">Indeks Ketegangan Hormuz (Torsi Psikologis): <span id="tensionValDisplay" style="color:var(--google-red); font-size:1.2em;">30</span>/100</label>
+                    <input type="range" id="tensionSlider" min="0" max="100" value="30">
+                </div>
+
+                <div class="metric-row">
+                    <div class="metric-box">
+                        <h4>Harga Fundamental</h4>
+                        <div class="val">Rp 10.000</div>
+                    </div>
+                    <div class="metric-box warning">
+                        <h4>Premi Risiko Emosi</h4>
+                        <div class="val" id="simPremium">+ Rp 450</div>
+                    </div>
+                    <div class="metric-box danger" style="background: rgba(234, 67, 53, 0.1); border-color: var(--google-red);">
+                        <h4 style="color: var(--google-red);">Harga Proyeksi Terdampak</h4>
+                        <div class="val" id="simTotal">Rp 10.450</div>
+                    </div>
+                </div>
+            </div>
+            
+            <p style="margin-top: 20px;">Emosi pasar menyumbang hingga eksponensial dari total lonjakan harga saat krisis mendekati indeks puncak (Indeks > 80).</p>
+        </div>
+        <div class="footer">Halaman 3 | Behavioral Simulation</div>
+    </div>
+
+    <!-- PAGE 4 -->
+    <div class="page custom-tilt" id="page4">
+        <header class="reveal">
+            <h2>4. Kurva Transmisi Dampak & Volatilitas</h2>
+        </header>
+        <div class="content reveal">
+            <p>Bagaimana sentimen di Teluk Persia berpindah ke SPBU lokal? Ini adalah masalah <strong>Expectation Management</strong>.</p>
+            
+            <div class="chart-container">
+                <canvas id="hormuzChart"></canvas>
+            </div>
+            
+            <div style="text-align: center; margin-top: -10px;">
+                <button id="btnSimulateEscalation" class="interactive-btn secondary">🔥 Simulasikan Eskalasi Mendadak</button>
+            </div>
+
+            <div style="margin-top: 30px;">
+                <h3><span class="tooltip" data-tooltip="Kecenderungan orang memisahkan alokasi uang ke 'keranjang mental' yang berbeda, sehingga pengeluaran tak terduga (BBM) merusak rencana anggaran lainnya.">Mental Accounting</span> & Paradoks Subsidi</h3>
+                <ol>
+                    <li><strong>Paradoks Subsidi:</strong> Subsidi penuh memperburuk <span class="tooltip" data-tooltip="Orang mengambil risiko berlebih karena mereka dilindungi dari konsekuensinya (misal: tetap boros BBM karena harga disubsidi negara).">Moral Hazard</span>. Konsumen tidak berhemat, beban fiskal negara meledak.</li>
+                </ol>
+            </div>
+        </div>
+        <div class="footer">Halaman 4 | Market Impact & Charting</div>
+    </div>
+
+    <!-- PAGE 5 -->
+    <div class="page custom-tilt" id="page5">
+        <div class="floating-circle" style="width: 200px; height: 200px; background: var(--google-blue); top: -50px; left: -50px;"></div>
+        
+        <header class="reveal">
+            <h2>5. Rekomendasi Strategis: Melawan Gravitasi</h2>
+        </header>
+        <div class="content reveal">
+            <p>Kita memerlukan pendekatan <em>Choice-Architectural</em> untuk meredam volatilitas:</p>
+
+            <div class="highlight-box" style="border-left-color: var(--google-green);">
+                <h3 style="color:var(--google-green); margin-top:0;">Rencana Aksi Prioritas:</h3>
+                <ul>
+                    <li><strong>Strategic Buffer Nudging:</strong> Umumkan cadangan nasional SPR (Strategic Petroleum Reserve) secara masif dan interaktif di media untuk mengurangi bias ketidakpastian.</li>
+                    <li><strong>Dynamic Pricing Framework:</strong> Penyesuaian harga skala kecil tapi sering untuk mencegah <em>price shock</em> dan membiasakan kognitif pasar.</li>
+                    <li><strong>Incentivizing Alternatives:</strong> Intervensi pajak perilaku untuk mempercepat adopsi EV (Electric Vehicles).</li>
+                </ul>
+            </div>
+
+            <div style="margin-top: 50px; border-top: 1px solid var(--border-color); padding-top: 20px; position: relative; z-index: 2;">
+                <p><strong>Disetujui Oleh:</strong><br><br>__________________________<br><em>Chief Economic Strategist</em></p>
+                <div style="display:flex; gap: 15px;">
+                    <a href="#" class="interactive-btn" onclick="alert('Mempersiapkan Dokumen PDF Resolusi Tinggi...'); window.print(); return false;">🖨️ Cetak Laporan (PDF)</a>
+                    <a href="#" class="interactive-btn" style="background: var(--google-yellow); color: #000;" onclick="alert('Tautan analitik disalin ke clipboard!'); return false;">🔗 Bagikan Dashboard</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer">Halaman 5 | Final Recommendations</div>
+    </div>
+
+    <script>
+        // 1. Scroll Progress Bar
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById("scroll-progress").style.width = scrolled + "%";
+        });
+
+        // 2. Scroll Animation (Reveal Elements)
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 100;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        reveal(); // Trigger on load
+
+        // 3. Dark Mode Toggle
+        const darkModeBtn = document.getElementById('darkModeToggle');
+        darkModeBtn.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            if(document.body.classList.contains('dark-mode')) {
+                darkModeBtn.textContent = '☀️';
+                Chart.defaults.color = '#e8eaed';
+            } else {
+                darkModeBtn.textContent = '🌙';
+                Chart.defaults.color = '#5f6368';
+            }
+            hormuzChart.update();
+        });
+
+        // 4. Interactive Simulator Logic
+        const slider = document.getElementById('tensionSlider');
+        const tensionValDisplay = document.getElementById('tensionValDisplay');
+        const simPremium = document.getElementById('simPremium');
+        const simTotal = document.getElementById('simTotal');
+        const baseFundamental = 10000;
+
+        slider.addEventListener('input', (e) => {
+            const val = parseInt(e.target.value);
+            tensionValDisplay.innerText = val;
+            
+            // Formula Anti-Gravity: Premium is non-linear (exponential) based on tension
+            // P = Tension^2 * 0.5
+            const premium = Math.floor(Math.pow(val, 2) * 0.5);
+            const total = baseFundamental + premium;
+
+            simPremium.innerText = `+ Rp ${premium.toLocaleString('id-ID')}`;
+            simTotal.innerText = `Rp ${total.toLocaleString('id-ID')}`;
+
+            // Visual feedback
+            if(val > 80) {
+                tensionValDisplay.style.color = 'var(--google-red)';
+                simTotal.parentElement.style.animation = 'floatAnimation 0.5s infinite';
+            } else {
+                tensionValDisplay.style.color = val > 50 ? 'var(--google-yellow)' : 'var(--google-green)';
+                simTotal.parentElement.style.animation = 'none';
+            }
+        });
+
+        // 5. Chart.js Initialization
+        Chart.defaults.font.family = "'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
+        const ctx = document.getElementById('hormuzChart').getContext('2d');
+        const initialDataBBM = [10000, 10200, 10500, 11000, 11200, 11500];
+        const initialDataTension = [10, 20, 30, 40, 35, 45];
+
+        let hormuzChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Minggu 1', 'Minggu 2', 'Minggu 3', 'Minggu 4', 'Minggu 5', 'Minggu 6'],
+                datasets: [{
+                    label: 'Harga Proyeksi BBM (Rp)',
+                    data: [...initialDataBBM],
+                    borderColor: '#4285F4',
+                    backgroundColor: 'rgba(66, 133, 244, 0.1)',
+                    borderWidth: 3,
+                    tension: 0.4,
+                    fill: true,
+                    yAxisID: 'y',
+                    pointBackgroundColor: '#fff',
+                    pointBorderColor: '#4285F4',
+                    pointRadius: 5,
+                    pointHoverRadius: 8
+                }, {
+                    label: 'Indeks Ketegangan (0-100)',
+                    data: [...initialDataTension],
+                    borderColor: '#EA4335',
+                    borderWidth: 2,
+                    borderDash: [5, 5],
+                    tension: 0.4,
+                    fill: false,
+                    yAxisID: 'y1',
+                    pointBackgroundColor: '#EA4335'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                plugins: {
+                    tooltip: {
+                        backgroundColor: 'rgba(0,0,0,0.8)',
+                        titleFont: { size: 14 },
+                        bodyFont: { size: 13 },
+                        padding: 15,
+                        cornerRadius: 8,
+                        displayColors: true
+                    },
+                    legend: { position: 'top' }
+                },
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        grid: { color: 'rgba(150, 150, 150, 0.1)' }
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        grid: { drawOnChartArea: false },
+                        min: 0,
+                        max: 100
+                    },
+                }
+            }
+        });
+
+        // 6. Simulate Attack Event Listener
+        document.getElementById('btnSimulateEscalation').addEventListener('click', () => {
+            const chartData = hormuzChart.data;
+            
+            // Add new week labels
+            chartData.labels.push('M-7 (Trigger)', 'M-8 (Panic)', 'M-9 (Peak)');
+            
+            // Spike the tension
+            const newTensions = [85, 98, 100];
+            chartData.datasets[1].data.push(...newTensions);
+            
+            // Anti-gravity exponential price hike
+            const newPrices = [12800, 15500, 18000];
+            chartData.datasets[0].data.push(...newPrices);
+
+            hormuzChart.update('active');
+            
+            // Disable button to prevent infinite array growth
+            document.getElementById('btnSimulateEscalation').style.display = 'none';
+
+            // Auto scroll to make chart visible
+            document.querySelector('.chart-container').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+
+        // 7. Subtle 3D Tilt Effect on mousemove over pages
+        document.querySelectorAll('.custom-tilt').forEach(page => {
+            page.addEventListener('mousemove', e => {
+                // Dimatikan sementara bila dirasa terlalu berat, hapus komentar untuk mengaktifkan
+                /*
+                const rect = page.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const xPct = x / rect.width - 0.5;
+                const yPct = y / rect.height - 0.5;
+                page.style.transform = `perspective(1000px) rotateY(${xPct * 2}deg) rotateX(${-yPct * 2}deg) translateY(-5px)`;
+                */
+            });
+            page.addEventListener('mouseleave', () => {
+                // page.style.transform = `perspective(1000px) rotateY(0deg) rotateX(0deg) translateY(0px)`;
+            });
+        });
+    </script>
+</body>
+</html>
